@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+    <style>
+        /* Hidden "Play" button for iOS/Android autoplay restrictions */
+        #start-btn {
+            position: absolute; z-index: 1000; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 15px 30px; background: #00f3ff; color: black;
+            font-family: sans-serif; font-weight: bold; border: none;
+            border-radius: 50px; cursor: pointer; display: none;
+        }
+    </style>
+</head>
+<body>
+    
+    <button id="start-btn">TAP TO START AR</button>
+
+    <a-scene mindar-image="imageTargetSrc: ./card.mind; filterMinCF:0.0001; filterBeta: 0.001;" 
+             color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" 
+             vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+        
+        <a-assets>
+            <video id="vid" src="./video.mp4" preload="auto" loop="true" crossorigin="anonymous" playsinline webkit-playsinline></video>
+        </a-assets>
+
+        <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+        <a-entity mindar-image-target="targetIndex: 0">
+            <a-video src="#vid" position="0 0 0" height="0.552" width="1" rotation="0 0 0"></a-video>
+        </a-entity>
+    </a-scene>
+
+    <script>
+        const startBtn = document.querySelector('#start-btn');
+        const video = document.querySelector('#vid');
+
+        // Show button only if we need user interaction to play video
+        startBtn.style.display = 'block';
+
+        startBtn.addEventListener('click', () => {
+            startBtn.style.display = 'none';
+            video.play();
+            video.pause(); // Pause immediately, wait for target
+        });
+
+        const arEntity = document.querySelector('a-entity');
+        
+        // When card is found, play video
+        arEntity.addEventListener("targetFound", event => {
+            console.log("Card found");
+            video.play();
+        });
+
+        // When card is lost, pause video
+        arEntity.addEventListener("targetLost", event => {
+            console.log("Card lost");
+            video.pause();
+        });
+    </script>
+</body>
+</html>

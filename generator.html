@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AR Card Generator</title>
+    <link rel="stylesheet" href="style.css"> </head>
+<body>
+    <div class="container">
+        <h1 class="glitch-text">AR CARD GENERATOR</h1>
+        
+        <div class="card glass-effect" style="max-width: 500px; margin: 0 auto;">
+            <h3>1. Upload Business Card (Image)</h3>
+            <input type="file" id="card-upload" accept="image/*" style="margin-bottom: 20px; width: 100%;">
+            
+            <h3>2. Upload Promo Video (MP4)</h3>
+            <input type="file" id="video-upload" accept="video/*" style="margin-bottom: 20px; width: 100%;">
+
+            <button onclick="generateLink()" class="card" style="width: 100%; background: var(--neon-blue); color: black; font-weight: bold; cursor: pointer;">
+                GENERATE MAGIC LINK
+            </button>
+
+            <div id="result" style="margin-top: 20px; display: none;">
+                <p>Your AR Link is ready:</p>
+                <a href="#" id="final-link" style="color: var(--neon-pink); word-break: break-all;">https://oli-ai.github.io/ar-card.html?id=123</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function generateLink() {
+            // In a real app, this would upload files to a server/database.
+            // For this demo, we just show the user where the link WOULD be.
+            const resultDiv = document.getElementById('result');
+            const link = document.getElementById('final-link');
+            
+            // Simulating processing time
+            document.querySelector('button').innerText = "PROCESSING...";
+            setTimeout(() => {
+                document.querySelector('button').innerText = "GENERATE MAGIC LINK";
+                resultDiv.style.display = 'block';
+                // Pointing to the viewer we created in Step 1
+                link.href = "ar-card.html"; 
+                link.innerText = window.location.origin + "/OLI-AI/ar-card.html";
+            }, 1500);
+        }
+    </script>
+</body>
+</html>
